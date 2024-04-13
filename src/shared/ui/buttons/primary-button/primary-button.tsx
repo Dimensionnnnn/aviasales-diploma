@@ -9,7 +9,7 @@ export type ButtonSize = 'small' | 'medium' | 'large';
 
 interface Props {
   title: string;
-  size: ButtonSize;
+  size?: ButtonSize;
   isDisabled?: boolean;
   isLoading?: boolean;
   isExit?: boolean;
