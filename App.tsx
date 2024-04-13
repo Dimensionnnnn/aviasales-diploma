@@ -24,6 +24,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import { ButtonSize, PrimaryButton } from '@shared/ui/buttons/primary-button/primary-button';
+import { UIDefaultInput } from '@shared/ui/inputs/default-input/default-input';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -78,6 +79,7 @@ function App(): React.JSX.Element {
           }}
         >
           <PrimaryButton title="Hello" size="large" />
+          <UIDefaultInput />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -104,4 +106,3 @@ const styles = StyleSheet.create({
 });
 
 export default App;
-
