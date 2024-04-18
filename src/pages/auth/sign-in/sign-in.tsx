@@ -38,7 +38,7 @@ export const SignInPage = ({ navigation }: SignInScreenProps) => {
   const { isValid } = formState;
 
   const onSubmit = (dataSubmit: SubmitProps) => {
-    dispatch(actions.signIn(dataSubmit));
+    dispatch(actions.signIn());
   };
 
   const handleSignUpNavigate = () => {

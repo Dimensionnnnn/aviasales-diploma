@@ -1,32 +1,28 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
-import { SafeAreaView, StyleSheet, useColorScheme } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import { ThemeProvider } from 'styled-components/native';
 
-import { PrimaryButton } from '@shared/ui/buttons/primary-button/primary-button';
-import { UIDefaultInput } from '@shared/ui/inputs/default-input/default-input';
-import { UILabelInput } from '@shared/ui/inputs/label-input/label-input';
+import { persistor, store } from '@shared/store';
 import { themes } from '@shared/ui/styles/themes';
 
 import { AppNavigator } from './navigation/app/app';
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
   return (
-    <NavigationContainer>
-      <ThemeProvider theme={themes.default}>
-        <GestureHandlerRootView style={gestureHandlerStyle}>
-          <AppNavigator />
-        </GestureHandlerRootView>
-      </ThemeProvider>
-    </NavigationContainer>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <NavigationContainer>
+          <ThemeProvider theme={themes.default}>
+            <GestureHandlerRootView style={gestureHandlerStyle}>
+              <AppNavigator />
+            </GestureHandlerRootView>
+          </ThemeProvider>
+        </NavigationContainer>
+      </PersistGate>
+    </Provider>
   );
 }
 
