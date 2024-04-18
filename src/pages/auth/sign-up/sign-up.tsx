@@ -42,7 +42,7 @@ export const SignUpPage = ({ navigation }: SignUpScreenProps) => {
   const { isValid } = formState;
 
   const onSubmit = (dataSubmit: SubmitProps) => {
-    dispatch(actions.signUp(dataSubmit));
+    dispatch(actions.signUp());
   };
 
   const handleSignInNavigate = () => {
