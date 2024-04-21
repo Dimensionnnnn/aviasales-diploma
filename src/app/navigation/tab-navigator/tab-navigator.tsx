@@ -1,10 +1,11 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Text } from 'react-native';
 
 // import { DeskColumnsPage } from '@pages/desk-columns';
 // import { PrayerPage } from '@pages/prayer';
 // import { PrayersByColumnIdPage } from '@pages/prayers-by-column-id';
 // import { SelfPrayersPage } from '@pages/self-prayers';
-// import { TabBar } from '@pages/tab-bar';
+import { TabBar } from '@pages/tab-bar/tab-bar';
 
 const Stack = createNativeStackNavigator();
 
@@ -49,8 +50,8 @@ export const TabNavigator = () => {
     <Stack.Navigator>
       <Stack.Group>
         <Stack.Screen
-          name="tab-bar"
-          component={() => <div>fdfd</div>}
+          name={RootRouteNames.TAB_BAR}
+          component={TabBar}
           options={{ headerShown: false }}
         />
         {/* <Stack.Screen

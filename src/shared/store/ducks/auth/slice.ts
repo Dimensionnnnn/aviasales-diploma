@@ -3,47 +3,12 @@ import { createSlice, isFulfilled, isPending, isRejected } from '@reduxjs/toolki
 import { actions } from './actions';
 
 interface Users {
-  /**
-   *
-   * @type {string}
-   * @memberof Users
-   */
-  createdAt: string;
-  /**
-   *
-   * @type {string}
-   * @memberof Users
-   */
-  updatedAt: string;
-  /**
-   *
-   * @type {string}
-   * @memberof Users
-   */
-  deletedAt: string;
-  /**
-   *
-   * @type {number}
-   * @memberof Users
-   */
+  // createdAt: string;
+  // updatedAt: string;
+  // deletedAt: string;
   id: number;
-  /**
-   *
-   * @type {string}
-   * @memberof Users
-   */
   email: string;
-  /**
-   *
-   * @type {string}
-   * @memberof Users
-   */
   name: string;
-  /**
-   *
-   * @type {string}
-   * @memberof Users
-   */
   token: string;
 }
 
@@ -74,9 +39,9 @@ export const authSlice = createSlice({
       state.loading = true;
     });
     builder.addMatcher(isFulfilled(actions.signIn, actions.signUp), (state, action) => {
-      // state.currentUser = action.payload;
-      // state.isAuthenticated = true;
-      // state.loading = false;
+      state.currentUser = action.payload;
+      state.isAuthenticated = true;
+      state.loading = false;
     });
     builder.addMatcher(isRejected(actions.signIn, actions.signUp), (state) => {
       state.loading = false;

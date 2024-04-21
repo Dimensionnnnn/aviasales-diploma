@@ -8,8 +8,8 @@ import { GuestStackParamList } from '@app/navigation/guest/guest';
 import { schema } from '@features/auth/sign-up/schema';
 
 import { FormInput } from '@shared/form-components/inputs/form-input/form-input';
-import { useAppDispatch } from '@shared/store';
-import { actions } from '@shared/store/ducks/auth';
+import { useAppDispatch } from '@shared/store/';
+import { actions } from '@shared/store/ducks/auth/';
 import { PrimaryButton } from '@shared/ui/buttons/primary-button/primary-button';
 import { TextButton } from '@shared/ui/buttons/text-button/text-button';
 
@@ -42,7 +42,7 @@ export const SignUpPage = ({ navigation }: SignUpScreenProps) => {
   const { isValid } = formState;
 
   const onSubmit = (dataSubmit: SubmitProps) => {
-    dispatch(actions.signUp());
+    dispatch(actions.signUp(dataSubmit));
   };
 
   const handleSignInNavigate = () => {
