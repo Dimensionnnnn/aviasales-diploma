@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import { ControllerRenderProps } from 'react-hook-form';
+import { ControllerFieldState, ControllerRenderProps } from 'react-hook-form';
 import { TextInputProps } from 'react-native';
 import { css } from 'styled-components/native';
 import { Interpolation } from 'styled-components/native/dist/types';
@@ -7,14 +7,16 @@ import { Interpolation } from 'styled-components/native/dist/types';
 import { UIDefaultInput } from '@shared/ui/inputs/default-input/default-input';
 
 interface Props extends TextInputProps {
+  fieldState: ControllerFieldState;
   field: ControllerRenderProps<any, any>;
   isDisabled?: boolean;
-  isDirty?: boolean;
 }
 
 export const DefaultFormInput = forwardRef<TextInputProps, Props>(
-  ({ field, isDisabled, isDirty, ...props }: Props, ref) => {
+  ({ field, fieldState, isDisabled, ...props }: Props, ref) => {
     const { value, onChange, onBlur } = field;
+
+    const { isDirty } = fieldState;
 
     const inputState: InputState | null = isDirty
       ? InputState.DIRTY
