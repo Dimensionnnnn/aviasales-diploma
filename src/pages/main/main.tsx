@@ -1,4 +1,3 @@
-import { Text } from 'react-native';
 import styled from 'styled-components/native';
 
 import { PrimaryHeader } from '@widgets/layouts/primary-header/primary-header';
@@ -13,6 +12,7 @@ export const Main = () => {
   const handleLogout = () => {
     dispatch(actions.logout());
   };
+
   return (
     <StyledContainer>
       <PrimaryHeader title="Авиабилеты" onLogout={handleLogout} />

@@ -2,17 +2,18 @@ import { API_AUTOCOMPLETE_URL, TOKEN } from '@env';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Keyboard, Modal } from 'react-native';
+import { Keyboard, Modal, View } from 'react-native';
 
 import { FormInput } from '@shared/form-components/inputs/form-input/form-input';
 import { useDebounce } from '@shared/hooks/use-debounce';
 import { useAppDispatch } from '@shared/store';
-import { actions } from '@shared/store/ducks/cheap-tickets';
-import { ApiParams } from '@shared/store/ducks/cheap-tickets/thunks';
+import { actions } from '@shared/store/ducks/special-offer';
+import { SpecialOffersParams } from '@shared/store/ducks/special-offer/thunks';
 import { AirportData } from '@shared/types/airport-data';
 import { ButtonIcon } from '@shared/ui/buttons/button-icon/button-icon';
 import { TextPressable } from '@shared/ui/buttons/text-pressable/text-pressable';
 import { SvgCloseIcon } from '@shared/ui/icons/components/svg-close-icon';
+import { Spinner } from '@shared/ui/spinner/spinner';
 
 import {
   StyledAutoCompleteContent,
@@ -22,6 +23,7 @@ import {
   StyledModalContainer,
   StyledModalInputContainer,
   StyledScrollView,
+  StyledSpinnerContainer,
 } from './ui/components';
 
 type InputNameType = 'departure' | 'destination';
@@ -65,6 +67,7 @@ export const BaseTicketsSearchModal: React.FC<Props> = ({
 
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [activeInput, setActiveInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     departure: '',
     destination: '',
@@ -78,21 +81,16 @@ export const BaseTicketsSearchModal: React.FC<Props> = ({
   const onSubmit = (dataSubmit: any) => {
     reset();
 
-    const params: ApiParams = {
-      currency: 'RUB',
-      period_type: 'year',
-      page: 1,
-      limit: 10,
-      show_to_affiliates: true,
-      sorting: 'price',
-      token: TOKEN,
+    const params: SpecialOffersParams = {
       origin: dataSubmit.departureCode,
       destination: dataSubmit.destinationCode,
-      one_way: false,
+      locale: 'ru',
+      token: TOKEN,
     };
 
-    dispatch(actions.getCheapTickets(params));
+    dispatch(actions.getSpecialOffers(params));
 
+    handleReset();
     onCloseWithNextOpen();
     Keyboard.dismiss();
   };
@@ -118,6 +116,8 @@ export const BaseTicketsSearchModal: React.FC<Props> = ({
             { city_name, code, country_name, id, name },
           ]);
         });
+
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error(error);
@@ -144,11 +144,15 @@ export const BaseTicketsSearchModal: React.FC<Props> = ({
     setFormData((prev) => ({ ...prev, [inputName]: value }));
   };
 
-  const handleClose = () => {
+  const handleReset = () => {
     setFormData({ departure: '', destination: '' });
     setSuggestions([]);
     reset({ departure: '', destination: '', departureCode: '', destinationCode: '' });
     setActiveInput('');
+  };
+
+  const handleClose = () => {
+    handleReset();
     onClose();
   };
 
@@ -156,12 +160,18 @@ export const BaseTicketsSearchModal: React.FC<Props> = ({
     if (debouncedDeparture) {
       fetchSuggestions('departure', debouncedDeparture);
     }
+
+    setSuggestions([]);
+    setIsLoading(false);
   }, [debouncedDeparture]);
 
   useEffect(() => {
     if (debouncedDestination) {
       fetchSuggestions('destination', debouncedDestination);
     }
+
+    setSuggestions([]);
+    setIsLoading(false);
   }, [debouncedDestination]);
 
   return (
@@ -183,6 +193,7 @@ export const BaseTicketsSearchModal: React.FC<Props> = ({
                   autoFocus={true}
                   onChange={(e) => {
                     renderProps.field.onChange(e);
+                    setIsLoading(true);
                     handleChange('departure')(e.nativeEvent.text);
                   }}
                 />
@@ -199,6 +210,7 @@ export const BaseTicketsSearchModal: React.FC<Props> = ({
                   placeholder="Куда - Москва"
                   onChange={(e) => {
                     renderProps.field.onChange(e);
+                    setIsLoading(true);
                     handleChange('destination')(e.nativeEvent.text);
                   }}
                 />
@@ -208,14 +220,20 @@ export const BaseTicketsSearchModal: React.FC<Props> = ({
 
           <StyledScrollView>
             <StyledAutoCompleteContent>
-              {suggestions.map((suggestion) => (
-                <StyledAutoCompleteItem key={suggestion.id}>
-                  <TextPressable
-                    title={suggestion.name + ' - ' + suggestion.code}
-                    onPress={() => handleSuggestionClick(suggestion)}
-                  />
-                </StyledAutoCompleteItem>
-              ))}
+              {isLoading ? (
+                <StyledSpinnerContainer>
+                  <Spinner color="#000" stroke="#fff" />
+                </StyledSpinnerContainer>
+              ) : (
+                suggestions.map((suggestion) => (
+                  <StyledAutoCompleteItem key={suggestion.id}>
+                    <TextPressable
+                      title={suggestion.name + ' - ' + suggestion.code}
+                      onPress={() => handleSuggestionClick(suggestion)}
+                    />
+                  </StyledAutoCompleteItem>
+                ))
+              )}
             </StyledAutoCompleteContent>
           </StyledScrollView>
         </StyledModalContainer>

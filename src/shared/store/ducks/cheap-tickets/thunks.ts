@@ -18,12 +18,15 @@ export type ApiParams = {
 };
 
 export const fetchCheapTicketsByIATAThunk = createAsyncThunk<CheapResponse, ApiParams>(
-  'v2/prices/latest',
+  'aviasales/v3/get_latest_prices',
   async (data: ApiParams, thunkApi: any) => {
     try {
-      const response: CheapResponse = await axios.get(`${API_TRAVELPAYOUTS_URL}v2/prices/latest`, {
-        params: data,
-      });
+      const response: CheapResponse = await axios.get(
+        `${API_TRAVELPAYOUTS_URL}aviasales/v3/get_latest_prices`,
+        {
+          params: data,
+        },
+      );
 
       return response.data;
     } catch (error: any) {
