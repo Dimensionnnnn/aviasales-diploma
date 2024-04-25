@@ -12,7 +12,10 @@ export const PrimaryTicketsSearch = () => {
 
   const handleBaseModalClose = () => {
     setIsBaseModalVisible(false);
-    setIsPrimaryModalVisible(true);
+
+    setTimeout(() => {
+      setIsPrimaryModalVisible(true);
+    }, 300);
   };
 
   return (

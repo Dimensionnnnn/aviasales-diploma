@@ -65,3 +65,9 @@ export const StyledScrollView = styled.ScrollView`
   height: 100%;
   margin-bottom: 150px;
 `;
+
+export const StyledSpinnerContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
