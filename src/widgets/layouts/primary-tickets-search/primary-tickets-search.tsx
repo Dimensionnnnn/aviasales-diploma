@@ -1,5 +1,8 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import styled from 'styled-components/native';
+
+import { RootRouteNames, RootStackParamList } from '@app/navigation/tab-navigator/tab-navigator';
 
 import { UILabelInput } from '@shared/ui/inputs/label-input/label-input';
 
@@ -8,14 +11,17 @@ import { PrimaryTicketsSearchModal } from '../primary-tickets-search-modal/prima
 
 export const PrimaryTicketsSearch = () => {
   const [isBaseModalVisible, setIsBaseModalVisible] = useState(false);
-  const [isPrimaryModalVisible, setIsPrimaryModalVisible] = useState(false);
+
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const handleBaseModalClose = () => {
     setIsBaseModalVisible(false);
 
-    setTimeout(() => {
-      setIsPrimaryModalVisible(true);
-    }, 300);
+    navigation.navigate(RootRouteNames.TICKETS);
+
+    // setTimeout(() => {
+    //   setIsPrimaryModalVisible(true);
+    // }, 300);
   };
 
   return (
@@ -28,10 +34,6 @@ export const PrimaryTicketsSearch = () => {
         isVisible={isBaseModalVisible}
         onClose={() => setIsBaseModalVisible(false)}
         onCloseWithNextOpen={handleBaseModalClose}
-      />
-      <PrimaryTicketsSearchModal
-        isVisible={isPrimaryModalVisible}
-        onClose={() => setIsPrimaryModalVisible(false)}
       />
     </StyledContainer>
   );

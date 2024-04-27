@@ -5,6 +5,8 @@ import { SpecialOffer } from '@shared/store/ducks/special-offer/slice';
 
 interface Props {
   ticket: SpecialOffer;
+  isForward?: boolean;
+  onClick?: () => void;
 }
 
 const formatDepartureDate = (dateString: string) => {
@@ -17,19 +19,16 @@ const formatDepartureDate = (dateString: string) => {
   return `${day}.${month}.${date.getFullYear()} ${hours}:${minutes}`;
 };
 
-const forwardTicketLink = async (ticketLink: string) => {
-  console.log(`https://www.aviasales.ru${ticketLink}`);
-  Linking.openURL(`https://www.aviasales.ru${ticketLink}`);
-
-  const url = `https://www.aviasales.ru${ticketLink}`;
-
-  const supported = await Linking.canOpenURL(url);
-
-  console.log(supported, url);
+const handleClick = async (ticketLink: string, isForward: boolean, onClick?: () => void) => {
+  if (isForward) {
+    Linking.openURL(`https://www.aviasales.ru${ticketLink}`);
+  } else {
+    onClick?.();
+  }
 };
 
-export const Ticket: React.FC<Props> = ({ ticket }) => (
-  <StyledTicketContainer onPress={() => forwardTicketLink(ticket.link)}>
+export const Ticket: React.FC<Props> = ({ ticket, isForward = false, onClick }) => (
+  <StyledTicketContainer onPress={() => handleClick(ticket.link, isForward, onClick)}>
     <StyledTicketHeader>
       <StyledTicketPriceTitle>{`${ticket.price} ₽`}</StyledTicketPriceTitle>
       <StyledTicketAirlineTitle>{ticket.airline_title}</StyledTicketAirlineTitle>

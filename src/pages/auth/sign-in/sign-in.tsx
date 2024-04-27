@@ -49,29 +49,29 @@ export const SignInPage = ({ navigation }: SignInScreenProps) => {
     <StyledContainer>
       <StyledImage source={backgroundImageUrl} resizeMode="cover" />
       <StyledWrapper>
-        <StyledTitle>Log in</StyledTitle>
+        <StyledTitle>Войти</StyledTitle>
         <ControllersContainer>
           <Controller
             control={control}
             name="email"
-            render={(renderProps) => <FormInput label="Email" {...renderProps} />}
+            render={(renderProps) => <FormInput label="Почта" {...renderProps} />}
           />
           <Controller
             control={control}
             name="password"
-            render={(renderProps) => <FormInput label="Password" isPassword {...renderProps} />}
+            render={(renderProps) => <FormInput label="Пароль" isPassword {...renderProps} />}
           />
         </ControllersContainer>
         <FooterContainer>
           <PrimaryButton
-            title="Confirm"
+            title="Войти"
             size="large"
             isDisabled={!isValid}
             onPress={handleSubmit(onSubmit)}
           />
           <FooterWrapper>
-            <FooterText>Don’t have an account?</FooterText>
-            <TextButton title="Sign up" onPress={handleSignUpNavigate} />
+            <FooterText>Ещё нету аккаунта?</FooterText>
+            <TextButton title="Зарегистрируйтесь" onPress={handleSignUpNavigate} />
           </FooterWrapper>
         </FooterContainer>
       </StyledWrapper>

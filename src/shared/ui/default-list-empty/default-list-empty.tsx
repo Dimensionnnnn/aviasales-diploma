@@ -1,14 +1,19 @@
 import styled, { css } from 'styled-components/native';
 
+import { SecondaryHeader } from '@widgets/layouts/secondary-header/secondary-header';
+
 import { listEmptyMessages } from '@shared/constants/list-empty-messages';
 import { SvgSeacrhIcon } from '@shared/ui/icons/components/svg-search-icon';
 
 export const DefaultListEmpty = () => {
   return (
-    <StyledContainer>
-      <SvgSeacrhIcon />
-      <StyledText>{listEmptyMessages}</StyledText>
-    </StyledContainer>
+    <>
+      <SecondaryHeader title={'Простите'} />
+      <StyledContainer>
+        <SvgSeacrhIcon />
+        <StyledText>{listEmptyMessages}</StyledText>
+      </StyledContainer>
+    </>
   );
 };
 

@@ -6,13 +6,15 @@ import { SvgBackIcon } from '@shared/ui/icons/components/svg-back-icon';
 
 interface Props {
   title: string;
+  onBack?: () => void;
 }
 
-export const SecondaryHeader = ({ title }: Props) => {
+export const SecondaryHeader = ({ title, onBack }: Props) => {
   const navigate = useNavigation();
 
   const handleGoBack = () => {
     navigate.goBack();
+    onBack?.();
   };
 
   return (
@@ -38,13 +40,14 @@ const StyledHeaderTitle = styled.Text`
     return css`
       ${props.theme.typography.headlineSemibold_20};
       color: ${props.theme.colors.grayscale_800};
+      margin-left: 40px;
+      max-width: 300px;
     `;
   }};
 `;
 
 const StyledButtonContainer = styled.View`
   position: absolute;
-  width: 100%;
   left: 16px;
   top: 12px;
 `;

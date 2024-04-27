@@ -1,48 +1,27 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Text } from 'react-native';
 
-// import { DeskColumnsPage } from '@pages/desk-columns';
-// import { PrayerPage } from '@pages/prayer';
-// import { PrayersByColumnIdPage } from '@pages/prayers-by-column-id';
-// import { SelfPrayersPage } from '@pages/self-prayers';
+import { PrimaryTicketsSearch } from '@pages/primary-tickets-search/primary-tickets-search';
 import { TabBar } from '@pages/tab-bar/tab-bar';
+import { TicketPage } from '@pages/ticket/ticket';
+
+import { SpecialOffer } from '@shared/store/ducks/special-offer/slice';
 
 const Stack = createNativeStackNavigator();
 
-type DeskColumnsRouteParams = {
-  deskId: number;
-  deskTitle: string;
-};
-
-type PrayersByColumnIdRouteParams = {
-  columnId: number;
-  columnTitle: string;
-};
-
-type SelfPrayersRouteParams = {
-  columnId: number;
-  columnTitle: string;
-};
-
-type PrayerRouteParams = {
-  prayerId: number;
-  prayerTitle: string;
+type TicketRouteParams = {
+  ticket: SpecialOffer;
 };
 
 export type RootStackParamList = {
   [RootRouteNames.TAB_BAR]: undefined;
-  [RootRouteNames.DESK_COLUMNS]: DeskColumnsRouteParams;
-  [RootRouteNames.PRAYERS_BY_COLUMN_ID]: PrayersByColumnIdRouteParams;
-  [RootRouteNames.SELF_PRAYERS]: SelfPrayersRouteParams;
-  [RootRouteNames.PRAYER]: PrayerRouteParams;
+  [RootRouteNames.TICKETS]: undefined;
+  [RootRouteNames.TICKET]: TicketRouteParams;
 };
 
 export enum RootRouteNames {
   TAB_BAR = 'tab-bar',
-  DESK_COLUMNS = 'desk-columns',
-  PRAYERS_BY_COLUMN_ID = 'prayers-by-column-id',
-  SELF_PRAYERS = 'self-prayers',
-  PRAYER = 'prayer',
+  TICKET = 'ticket',
+  TICKETS = 'tickets',
 }
 
 export const TabNavigator = () => {
@@ -54,31 +33,16 @@ export const TabNavigator = () => {
           component={TabBar}
           options={{ headerShown: false }}
         />
-        {/* <Stack.Screen
-          name={RootRouteNames.TAB_BAR}
-          component={TabBar}
+        <Stack.Screen
+          name={RootRouteNames.TICKET}
+          component={TicketPage}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name={RootRouteNames.DESK_COLUMNS}
-          component={DeskColumnsPage}
+          name={RootRouteNames.TICKETS}
+          component={PrimaryTicketsSearch}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name={RootRouteNames.PRAYERS_BY_COLUMN_ID}
-          component={PrayersByColumnIdPage}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name={RootRouteNames.SELF_PRAYERS}
-          component={SelfPrayersPage}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name={RootRouteNames.PRAYER}
-          component={PrayerPage}
-          options={{ headerShown: false }}
-        /> */}
       </Stack.Group>
     </Stack.Navigator>
   );
