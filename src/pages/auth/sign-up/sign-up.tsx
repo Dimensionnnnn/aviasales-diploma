@@ -54,41 +54,41 @@ export const SignUpPage = ({ navigation }: SignUpScreenProps) => {
       <StyledImage source={backgroundImageUrl} resizeMode="cover" />
       <StyledFormContainer>
         <StyledWrapper>
-          <StyledTitle>Registration</StyledTitle>
+          <StyledTitle>Регистрация</StyledTitle>
           <ControllersContainer>
             <Controller
               control={control}
               name="name"
-              render={(renderProps) => <FormInput label="Name" {...renderProps} />}
+              render={(renderProps) => <FormInput label="Имя" {...renderProps} />}
             />
             <Controller
               control={control}
               name="email"
-              render={(renderProps) => <FormInput label="Email" {...renderProps} />}
+              render={(renderProps) => <FormInput label="Почта" {...renderProps} />}
             />
             <Controller
               control={control}
               name="password"
-              render={(renderProps) => <FormInput label="Password" isPassword {...renderProps} />}
+              render={(renderProps) => <FormInput label="Пароль" isPassword {...renderProps} />}
             />
             <Controller
               control={control}
               name="confirmPassword"
               render={(renderProps) => (
-                <FormInput label="Confirm password" isPassword {...renderProps} />
+                <FormInput label="Подтвердите пароль" isPassword {...renderProps} />
               )}
             />
           </ControllersContainer>
           <FooterContainer>
             <PrimaryButton
-              title="Register"
+              title="Зарегистрироваться"
               size="large"
               isDisabled={!isValid}
               onPress={handleSubmit(onSubmit)}
             />
             <FooterWrapper>
-              <FooterText>Already have an account?</FooterText>
-              <TextButton title="Log in" onPress={handleSignInNavigate} />
+              <FooterText>Уже есть аккаунт?</FooterText>
+              <TextButton title="Войдите" onPress={handleSignInNavigate} />
             </FooterWrapper>
           </FooterContainer>
         </StyledWrapper>

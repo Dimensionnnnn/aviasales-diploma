@@ -1,8 +1,12 @@
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Modal, Pressable } from 'react-native';
 import styled, { css } from 'styled-components/native';
 
+import { RootRouteNames, RootStackParamList } from '@app/navigation/tab-navigator/tab-navigator';
+
 import { useAppDispatch, useAppSelector } from '@shared/store';
 import { actions } from '@shared/store/ducks/special-offer';
+import { SpecialOffer } from '@shared/store/ducks/special-offer/slice';
 import { ButtonIcon } from '@shared/ui/buttons/button-icon/button-icon';
 import { DataHandler } from '@shared/ui/data-handler/data-handler';
 import { SvgCloseIcon } from '@shared/ui/icons/components/svg-close-icon';
@@ -25,6 +29,12 @@ interface Props {
 export const PrimaryTicketsSearchModal: React.FC<Props> = ({ isVisible, onClose }) => {
   const dispatch = useAppDispatch();
   const specialTickets = useAppSelector((state) => state.specialOffers);
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
+  const handleNavigate = (ticket: SpecialOffer) => {
+    // onClose();
+    navigation.navigate(RootRouteNames.TICKET, { ticket });
+  };
 
   const handleClose = () => {
     dispatch(actions.clearSpecialOffers());
@@ -48,7 +58,10 @@ export const PrimaryTicketsSearchModal: React.FC<Props> = ({ isVisible, onClose 
                 <StyledHeaderTitle>
                   {specialTickets.data[0]?.title ? specialTickets.data[0].title : 'Билеты'}
                 </StyledHeaderTitle>
-                <Ticket ticket={specialTickets.data[0]} />
+                <Ticket
+                  ticket={specialTickets.data[0]}
+                  onClick={() => handleNavigate(specialTickets.data[0])}
+                />
               </StyledContentContainer>
             )}
           </DataHandler>

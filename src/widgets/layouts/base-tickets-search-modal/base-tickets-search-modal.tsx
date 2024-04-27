@@ -2,7 +2,7 @@ import { API_AUTOCOMPLETE_URL, TOKEN } from '@env';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Keyboard, Modal, View } from 'react-native';
+import { Keyboard, Modal } from 'react-native';
 
 import { FormInput } from '@shared/form-components/inputs/form-input/form-input';
 import { useDebounce } from '@shared/hooks/use-debounce';
