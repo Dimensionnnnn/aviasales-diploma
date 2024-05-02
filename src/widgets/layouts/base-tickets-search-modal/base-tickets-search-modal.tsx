@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Keyboard, Modal } from 'react-native';
 
+import { TicketsRouteParams } from '@app/navigation/tab-navigator/tab-navigator';
+
 import { FormInput } from '@shared/form-components/inputs/form-input/form-input';
 import { useDebounce } from '@shared/hooks/use-debounce';
 import { useAppDispatch } from '@shared/store';
@@ -47,21 +49,23 @@ const determineLocale = (value: string) => {
 
 interface Props {
   isVisible: boolean;
+  searchParams?: TicketsRouteParams;
   onClose: () => void;
-  onCloseWithNextOpen: () => void;
+  onCloseWithNextOpen: (props: TicketsRouteParams) => void;
 }
 
 export const BaseTicketsSearchModal: React.FC<Props> = ({
   isVisible,
+  searchParams,
   onClose,
   onCloseWithNextOpen,
 }) => {
   const { control, handleSubmit, reset, getValues } = useForm({
     defaultValues: {
-      departure: '',
-      departureCode: '',
-      destination: '',
-      destinationCode: '',
+      departure: searchParams?.origin ?? '',
+      departureCode: searchParams?.originCode ?? '',
+      destination: searchParams?.destination ?? '',
+      destinationCode: searchParams?.destinationCode ?? '',
     },
   });
 
@@ -69,8 +73,8 @@ export const BaseTicketsSearchModal: React.FC<Props> = ({
   const [activeInput, setActiveInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>({
-    departure: '',
-    destination: '',
+    departure: searchParams?.origin ?? '',
+    destination: searchParams?.destination ?? '',
   });
 
   const dispatch = useAppDispatch();
@@ -91,7 +95,12 @@ export const BaseTicketsSearchModal: React.FC<Props> = ({
     dispatch(actions.getSpecialOffers(params));
 
     handleReset();
-    onCloseWithNextOpen();
+    onCloseWithNextOpen({
+      origin: dataSubmit.departure,
+      destination: dataSubmit.destination,
+      originCode: dataSubmit.departureCode,
+      destinationCode: dataSubmit.destinationCode,
+    });
     Keyboard.dismiss();
   };
 

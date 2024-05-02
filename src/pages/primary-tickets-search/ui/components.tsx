@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 
 export const StyledContainer = styled.View`
   justify-content: center;
@@ -64,5 +64,72 @@ export const StyledSpinnerContainer = styled.View`
 `;
 
 export const StyledContentContainer = styled.View`
-  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+`;
+
+export const StyledDateContainer = styled.View`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 16px;
+  margin-bottom: 20px;
+  max-width: 343px;
+`;
+
+export const StyledDateItem = styled.View`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const StyledDateText = styled.Text`
+  ${(props) => {
+    return css`
+      ${props.theme.typography.bodyRegular_16};
+      color: ${props.theme.colors.grayscale_800};
+    `;
+  }}
+`;
+
+export const StyledSearchButtonContainer = styled.View`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 20px;
+`;
+
+export const StyledTicketsContainer = styled.ScrollView`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const StyledTicketsWrapper = styled.View`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+export const StyledTitleTickets = styled.Text`
+  ${(props) => {
+    return css`
+      ${props.theme.typography.headlineMedium_18};
+      color: ${props.theme.colors.grayscale_800};
+      margin-bottom: 20px;
+      margin-top: 24px;
+    `;
+  }}
+`;
+
+export const HeaderContainer = styled.View`
+  width: 100%;
+`;
+
+export const ContentContainer = styled.ScrollView`
+  width: 100%;
 `;
