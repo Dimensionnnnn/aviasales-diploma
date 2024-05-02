@@ -5,10 +5,14 @@ import { SecondaryHeader } from '@widgets/layouts/secondary-header/secondary-hea
 import { listEmptyMessages } from '@shared/constants/list-empty-messages';
 import { SvgSeacrhIcon } from '@shared/ui/icons/components/svg-search-icon';
 
-export const DefaultListEmpty = () => {
+interface Props {
+  isWithHeader?: boolean;
+}
+
+export const DefaultListEmpty: React.FC<Props> = ({ isWithHeader }) => {
   return (
     <>
-      <SecondaryHeader title={'Простите'} />
+      {isWithHeader && <SecondaryHeader title={'Простите'} />}
       <StyledContainer>
         <SvgSeacrhIcon />
         <StyledText>{listEmptyMessages}</StyledText>
@@ -20,7 +24,7 @@ export const DefaultListEmpty = () => {
 const StyledContainer = styled.View`
   width: 100%;
   align-items: center;
-  padding-top: 125px;
+  padding-top: 70px;
   justify-content: center;
   gap: 20px;
 `;

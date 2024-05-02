@@ -1,10 +1,12 @@
+import { URL_OPEN } from '@env';
 import { Linking } from 'react-native';
 import styled, { css } from 'styled-components/native';
 
 import { SpecialOffer } from '@shared/store/ducks/special-offer/slice';
+import { PricesForDatesType } from '@shared/store/ducks/tickets-by-dates/slice';
 
 interface Props {
-  ticket: SpecialOffer;
+  ticket: SpecialOffer | PricesForDatesType;
   isForward?: boolean;
   onClick?: () => void;
 }
@@ -21,17 +23,23 @@ const formatDepartureDate = (dateString: string) => {
 
 const handleClick = async (ticketLink: string, isForward: boolean, onClick?: () => void) => {
   if (isForward) {
-    Linking.openURL(`https://www.aviasales.ru${ticketLink}`);
+    Linking.openURL(`${URL_OPEN}${ticketLink}`);
   } else {
     onClick?.();
   }
+};
+
+const isSpecialOffer = (ticket: SpecialOffer | PricesForDatesType): ticket is SpecialOffer => {
+  return (ticket as SpecialOffer).airline_title !== undefined;
 };
 
 export const Ticket: React.FC<Props> = ({ ticket, isForward = false, onClick }) => (
   <StyledTicketContainer onPress={() => handleClick(ticket.link, isForward, onClick)}>
     <StyledTicketHeader>
       <StyledTicketPriceTitle>{`${ticket.price} ₽`}</StyledTicketPriceTitle>
-      <StyledTicketAirlineTitle>{ticket.airline_title}</StyledTicketAirlineTitle>
+      {isSpecialOffer(ticket) && ticket.airline_title && (
+        <StyledTicketAirlineTitle>{ticket.airline_title}</StyledTicketAirlineTitle>
+      )}
     </StyledTicketHeader>
     <StyledTicketMain>
       <StyledTicketDataTitle>

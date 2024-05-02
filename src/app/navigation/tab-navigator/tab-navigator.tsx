@@ -5,16 +5,24 @@ import { TabBar } from '@pages/tab-bar/tab-bar';
 import { TicketPage } from '@pages/ticket/ticket';
 
 import { SpecialOffer } from '@shared/store/ducks/special-offer/slice';
+import { PricesForDatesType } from '@shared/store/ducks/tickets-by-dates/slice';
 
 const Stack = createNativeStackNavigator();
 
 type TicketRouteParams = {
-  ticket: SpecialOffer;
+  ticket: SpecialOffer | PricesForDatesType;
+};
+
+export type TicketsRouteParams = {
+  origin: string;
+  destination: string;
+  originCode: string;
+  destinationCode: string;
 };
 
 export type RootStackParamList = {
   [RootRouteNames.TAB_BAR]: undefined;
-  [RootRouteNames.TICKETS]: undefined;
+  [RootRouteNames.TICKETS]: TicketsRouteParams;
   [RootRouteNames.TICKET]: TicketRouteParams;
 };
 
