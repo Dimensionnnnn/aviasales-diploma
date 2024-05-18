@@ -7,14 +7,36 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import weekday from 'dayjs/plugin/weekday';
 import { useEffect, useState } from 'react';
 import { Image, Linking } from 'react-native';
-import styled, { css } from 'styled-components/native';
 
 import { RootRouteNames, RootStackParamList } from '@app/navigation/tab-navigator/tab-navigator';
 
 import { SecondaryHeader } from '@widgets/layouts/secondary-header/secondary-header';
 
+import { useAppDispatch, useAppSelector } from '@shared/store';
+import { actions as favoriteTicketsActions } from '@shared/store/ducks/favorite-tickets';
+import { FavoriteTicketParams } from '@shared/store/ducks/favorite-tickets/slice';
+import { SpecialOffer } from '@shared/store/ducks/special-offer/slice';
 import { PricesForDatesType } from '@shared/store/ducks/tickets-by-dates/slice';
+import { ButtonIcon } from '@shared/ui/buttons/button-icon/button-icon';
 import { PrimaryButton } from '@shared/ui/buttons/primary-button/primary-button';
+import { SvgHeartIcon } from '@shared/ui/icons/components/svg-heart-icon';
+import { SvgOutlineHeartIcon } from '@shared/ui/icons/components/svg-outline-heart-icon';
+
+import {
+  ButtonContainer,
+  ImageSmall,
+  StyledContainer,
+  StyledContentContainer,
+  TicketContainer,
+  TicketInfoContainer,
+  TicketItem,
+  TicketItemDate,
+  TicketItemTime,
+  TicketItemTitle,
+  TicketTime,
+  TicketTimeWrapper,
+  TicketTitle,
+} from './ui/components';
 
 dayjs.extend(localizedFormat);
 dayjs.extend(weekday);
@@ -23,6 +45,12 @@ dayjs.locale('ru');
 function capitalizeFirstLetter(string: string): string {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+const isPricesForDatesType = (
+  ticket: SpecialOffer | PricesForDatesType,
+): ticket is PricesForDatesType => {
+  return (ticket as SpecialOffer).airline_title === undefined;
+};
 
 function formatDepartureTime(departureTime: string): any {
   const date = dayjs(departureTime);
@@ -61,6 +89,9 @@ export const TicketPage = () => {
   const props = route.params.ticket;
   const [cityFirst, setCityFirst] = useState('');
   const [citySecond, setCitySecond] = useState('');
+  const [isLiked, setIsLiked] = useState(route.params.isFavorite ?? false);
+  const isPricesForDates = isPricesForDatesType(props);
+  const dispatch = useAppDispatch();
 
   const getCityName = (value: string, callbackCitySetter: (value: string) => void) => {
     return axios
@@ -86,6 +117,44 @@ export const TicketPage = () => {
   };
 
   const returnInfo = props as PricesForDatesType;
+
+  const userId = useAppSelector((state) => state.auth.currentUser?.id);
+
+  const ticketLike = () => {
+    if (isPricesForDates) {
+      if (userId) {
+        const favoriteTicket: FavoriteTicketParams = {
+          userId: userId,
+          ...props,
+        };
+
+        dispatch(favoriteTicketsActions.likeTicket(favoriteTicket));
+        setIsLiked(true);
+      }
+    }
+  };
+
+  const ticketUnlike = () => {
+    if (isPricesForDates) {
+      if (userId) {
+        dispatch(
+          favoriteTicketsActions.dislikeTicketByFlightNumber({
+            userId: userId,
+            flightNumber: props.flight_number,
+          }),
+        );
+        setIsLiked(false);
+      }
+    }
+  };
+
+  const handleButtonLicke = () => {
+    if (isLiked) {
+      ticketUnlike();
+    } else {
+      ticketLike();
+    }
+  };
 
   return (
     <StyledContainer>
@@ -127,108 +196,18 @@ export const TicketPage = () => {
         </TicketContainer>
       </StyledContentContainer>
       <ButtonContainer>
-        <PrimaryButton size="large" title="Подробнее" onPress={() => handleClick(props.link)} />
+        <PrimaryButton
+          size={isPricesForDates ? 'medium' : 'large'}
+          title="Подробнее"
+          onPress={() => handleClick(props.link)}
+        />
+        {isPricesForDates && (
+          <ButtonIcon
+            Icon={isLiked ? SvgOutlineHeartIcon : SvgHeartIcon}
+            onPress={handleButtonLicke}
+          />
+        )}
       </ButtonContainer>
     </StyledContainer>
   );
 };
-
-const StyledContainer = styled.View`
-  flex: 1;
-  background-color: ${(props) => props.theme.colors.grayscale_200};
-  position: relative;
-`;
-
-const StyledContentContainer = styled.View`
-  flex: 1;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  padding: 0 16px 0 14px;
-`;
-
-const TicketInfoContainer = styled.View`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  background-color: ${(props) => props.theme.colors.grayscale_500};
-  border-radius: 12px;
-  padding: 16px;
-  margin-top: 16px;
-`;
-
-const TicketItem = styled.View`
-  display: flex;
-  flex-direction: column;
-  margin-left: 16px;
-`;
-
-const TicketItemTitle = styled.Text`
-  ${(props) => {
-    return css`
-      ${props.theme.typography.headlineRegular_18};
-      color: ${props.theme.colors.grayscale_800};
-    `;
-  }}
-`;
-
-const TicketItemDate = styled.Text`
-  ${(props) => {
-    return css`
-      ${props.theme.typography.bodyRegular_14};
-      color: ${props.theme.colors.grayscale_700};
-    `;
-  }}
-`;
-
-const TicketItemTime = styled.Text`
-  ${(props) => {
-    return css`
-      ${props.theme.typography.bodyRegular_16};
-      color: ${props.theme.colors.grayscale_800};
-    `;
-  }}
-`;
-
-const TicketTitle = styled.Text`
-  ${(props) => {
-    return css`
-      ${props.theme.typography.headlineSemibold_20};
-      color: ${props.theme.colors.grayscale_800};
-    `;
-  }}
-`;
-
-const TicketTime = styled.Text`
-  ${(props) => {
-    return css`
-      ${props.theme.typography.bodyRegular_16};
-      color: ${props.theme.colors.grayscale_700};
-    `;
-  }}
-`;
-
-const TicketTimeWrapper = styled.View`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  gap: 16px;
-`;
-
-const TicketContainer = styled.View`
-  width: 100%;
-`;
-
-const ImageSmall = styled.Image`
-  width: 150px;
-  height: 100px;
-  margin-left: 16px;
-`;
-
-const ButtonContainer = styled.View`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 20px;
-`;

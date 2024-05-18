@@ -48,7 +48,7 @@ export const PrimaryTicketsSearchModal: React.FC<Props> = ({ isVisible, onClose 
           <StyledButtonModalClose>
             <ButtonIcon Icon={SvgCloseIcon} onPress={handleClose} />
           </StyledButtonModalClose>
-          <DataHandler data={specialTickets.data}>
+          <DataHandler data={specialTickets.data} isWithHeader={false}>
             {specialTickets.loading ? (
               <StyledSpinnerContainer>
                 <Spinner />

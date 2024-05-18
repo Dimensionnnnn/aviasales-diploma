@@ -6,7 +6,7 @@ interface Users {
   // createdAt: string;
   // updatedAt: string;
   // deletedAt: string;
-  id: number;
+  id: string;
   email: string;
   name: string;
   token: string;

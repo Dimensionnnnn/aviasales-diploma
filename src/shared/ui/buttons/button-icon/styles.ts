@@ -27,9 +27,9 @@ const styles = {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      maxWidth: 46,
-      height: 46,
-      borderRadius: 32,
+      maxWidth: 60,
+      height: 60,
+      borderRadius: 55,
     },
   }),
 };

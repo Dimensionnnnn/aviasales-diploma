@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import { CustromDrawer } from '@pages/drawer/drawer';
 import { PrimaryTicketsSearch } from '@pages/primary-tickets-search/primary-tickets-search';
 import { TabBar } from '@pages/tab-bar/tab-bar';
 import { TicketPage } from '@pages/ticket/ticket';
@@ -11,6 +12,7 @@ const Stack = createNativeStackNavigator();
 
 type TicketRouteParams = {
   ticket: SpecialOffer | PricesForDatesType;
+  isFavorite?: boolean;
 };
 
 export type TicketsRouteParams = {
@@ -30,6 +32,7 @@ export enum RootRouteNames {
   TAB_BAR = 'tab-bar',
   TICKET = 'ticket',
   TICKETS = 'tickets',
+  CUSTOM_DRAWER = 'custom-drawer',
 }
 
 export const TabNavigator = () => {
@@ -37,8 +40,8 @@ export const TabNavigator = () => {
     <Stack.Navigator>
       <Stack.Group>
         <Stack.Screen
-          name={RootRouteNames.TAB_BAR}
-          component={TabBar}
+          name={RootRouteNames.CUSTOM_DRAWER}
+          component={CustromDrawer}
           options={{ headerShown: false }}
         />
         <Stack.Screen
